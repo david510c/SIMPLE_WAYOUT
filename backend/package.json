@@ -1,0 +1,22 @@
+{
+  "name": "simple-wayout-backend",
+  "version": "1.0.0",
+  "description": "SIMPLE_WAYOUT backend server",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.4.0",
+    "@fastify/static": "^6.11.2",
+    "fastify": "^4.24.0",
+    "pino-pretty": "^10.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.2.0"
+  }
+}

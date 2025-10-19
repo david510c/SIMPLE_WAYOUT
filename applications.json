@@ -1,0 +1,66 @@
+{
+  "applications": [
+    {
+      "id": "calculator",
+      "name": "Calculator",
+      "description": "GNOME Calculator",
+      "icon": "🧮",
+      "category": "Utilities",
+      "executable": "/usr/bin/gnome-calculator",
+      "args": [],
+      "env": {}
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "description": "GNOME Terminal",
+      "icon": "💻",
+      "category": "System",
+      "executable": "/usr/bin/gnome-terminal",
+      "args": [],
+      "env": {}
+    },
+    {
+      "id": "firefox",
+      "name": "Firefox",
+      "description": "Firefox Web Browser",
+      "icon": "🦊",
+      "category": "Internet",
+      "executable": "/usr/bin/firefox",
+      "args": [],
+      "env": {
+        "MOZ_ENABLE_WAYLAND": "1"
+      }
+    },
+    {
+      "id": "gedit",
+      "name": "Text Editor",
+      "description": "GNOME Text Editor",
+      "icon": "📝",
+      "category": "Utilities",
+      "executable": "/usr/bin/gedit",
+      "args": [],
+      "env": {}
+    },
+    {
+      "id": "nautilus",
+      "name": "Files",
+      "description": "GNOME Files Manager",
+      "icon": "📁",
+      "category": "System",
+      "executable": "/usr/bin/nautilus",
+      "args": [],
+      "env": {}
+    },
+    {
+      "id": "chromium",
+      "name": "Chromium",
+      "description": "Chromium Web Browser",
+      "icon": "🌐",
+      "category": "Internet",
+      "executable": "/usr/bin/chromium",
+      "args": ["--enable-features=UseOzonePlatform", "--ozone-platform=wayland"],
+      "env": {}
+    }
+  ]
+}

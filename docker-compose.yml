@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  simple-wayout:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: simple-wayout:latest
+    container_name: simple-wayout
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - WAYLAND_DISPLAY=wayland-0
+    volumes:
+      # Mount DRI for hardware acceleration
+      - /dev/dri:/dev/dri
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

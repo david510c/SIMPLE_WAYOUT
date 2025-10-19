@@ -37,40 +37,42 @@ Each component has a single, clear responsibility. No hidden dependencies.
 ### Prerequisites
 
 - Node.js 18+
-- Docker (for compositor-proxy)
+- Docker
+- Linux with DRI support (`/dev/dri/renderD128`)
 
-### Development
+### Development (One Command)
 
 ```bash
-# 1. Start compositor-proxy
-docker run -d \
-  -p 8081:8081 \
-  --name compositor-proxy \
-  david510c/greenfield-base:v1.5-diagnostic-fixed-v4
-
-# 2. Install frontend dependencies
-cd frontend
-npm install
-
-# 3. Start frontend dev server
-npm run dev
-
-# 4. Open browser
-open http://localhost:3000
+./start-dev.sh
 ```
 
-### Production
+This starts everything: compositor-proxy, backend, and frontend.
+Open http://localhost:3000
+
+### Production (One Command)
 
 ```bash
-# Build frontend
-cd frontend
-npm run build
+# Build and run
+./build.sh
+docker-compose up -d
+```
 
-# Build Docker image
-docker build -t simple-wayout .
+Open http://localhost:8080
 
-# Run
-docker run -p 8080:8080 simple-wayout
+### Manual Development Setup
+
+```bash
+# Terminal 1: Compositor
+docker run -d --name compositor-proxy -p 8081:8081 \
+  --device /dev/dri/renderD128 \
+  david510c/greenfield-base:v1.5-diagnostic-fixed-v4 \
+  compositor-proxy-cli --bind-port 8081 --bind-ip 0.0.0.0
+
+# Terminal 2: Backend
+cd backend && npm install && npm run dev
+
+# Terminal 3: Frontend
+cd frontend && npm install && npm run dev
 ```
 
 ## Project Structure

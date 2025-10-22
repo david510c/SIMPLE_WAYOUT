@@ -31,7 +31,7 @@ export function CanvasDisplay({ app, onStop }: Props) {
     if (!ready) return
 
     console.log('[CanvasDisplay] Showing canvas for', app.appId)
-    const canvas = document.getElementById('greenfield-canvas') as HTMLCanvasElement
+    const canvas = document.getElementById('output') as HTMLCanvasElement
     
     if (canvas) {
       canvas.style.display = 'block'

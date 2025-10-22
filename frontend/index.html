@@ -20,9 +20,23 @@
       width: 100%;
       height: 100vh;
     }
+    
+    #output {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+      z-index: 1;
+      background: #000;
+    }
   </style>
 </head>
 <body>
+  <!-- Canvas MUST exist in HTML before React mounts, like the working example -->
+  <canvas id="output" width="1920" height="1080"></canvas>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

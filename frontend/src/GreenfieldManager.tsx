@@ -52,43 +52,29 @@ export function GreenfieldManager({ children }: Props) {
       console.log('[GreenfieldManager] Starting initialization')
 
       // Step 1: Load WASM decoder
-      console.log('[GreenfieldManager] Step 1: Loading WASM')
       await initWasm()
       console.log('[GreenfieldManager] ✓ WASM loaded')
 
-      // Step 2: Create compositor session
-      console.log('[GreenfieldManager] Step 2: Creating session')
-      const newSession = await createCompositorSession({ mode: 'floating' } as any)
+      // Step 2: Create compositor session - use exact same mode as working example
+      const newSession = await createCompositorSession({ mode: 'experimental-fullscreen' })
       console.log('[GreenfieldManager] ✓ Session created')
 
-      // Step 3: Wait for canvas to be ready
-      console.log('[GreenfieldManager] Step 3: Waiting for canvas')
-      const canvas = await waitForCanvas()
-      console.log('[GreenfieldManager] ✓ Canvas ready', {
-        width: canvas.width,
-        height: canvas.height,
-      })
+      // Step 3: Get canvas (it's already in the DOM from index.html)
+      const canvas = document.getElementById('output') as HTMLCanvasElement
+      if (!canvas) {
+        throw new Error('Canvas element not found')
+      }
+      console.log('[GreenfieldManager] ✓ Canvas found')
 
-      // Step 4: Verify canvas is valid
-      console.log('[GreenfieldManager] Step 4: Verifying canvas')
-      verifyCanvas(canvas)
-      console.log('[GreenfieldManager] ✓ Canvas verified')
-
-      // Step 5: Initialize scene
-      console.log('[GreenfieldManager] Step 5: Initializing scene')
-      ;(newSession.userShell.actions as any).initScene(() => {
-        console.log('[GreenfieldManager] Canvas provider called')
-        return { canvas, id: canvas.id }
-      })
+      // Step 4: Initialize scene - EXACTLY like the working example
+      newSession.userShell.actions.initScene(() => ({ canvas, id: canvas.id }))
       console.log('[GreenfieldManager] ✓ Scene initialized')
 
-      // Step 6: Register globals
-      console.log('[GreenfieldManager] Step 6: Registering globals')
+      // Step 5: Register globals
       newSession.globals.register()
       console.log('[GreenfieldManager] ✓ Globals registered')
 
-      // Step 7: Set up event handlers
-      console.log('[GreenfieldManager] Step 7: Setting up events')
+      // Step 6: Set up event handlers
       setupEventHandlers(newSession)
       console.log('[GreenfieldManager] ✓ Events configured')
 
@@ -117,7 +103,7 @@ export function GreenfieldManager({ children }: Props) {
       const maxAttempts = 50 // 5 seconds
 
       const check = () => {
-        const canvas = document.getElementById('greenfield-canvas') as HTMLCanvasElement
+        const canvas = document.getElementById('output') as HTMLCanvasElement
 
         // Check all requirements
         if (

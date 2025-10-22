@@ -34,7 +34,7 @@ RUN npm run build
 # ==============================================================================
 # Stage 3: Final production image
 # ==============================================================================
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 

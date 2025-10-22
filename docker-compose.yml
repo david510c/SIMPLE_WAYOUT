@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Greenfield compositor-proxy
   compositor-proxy:
@@ -21,7 +19,7 @@ services:
   simple-wayout:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.two-container
     image: simple-wayout:latest
     container_name: simple-wayout
     depends_on:

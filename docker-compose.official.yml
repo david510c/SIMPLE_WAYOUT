@@ -1,7 +1,5 @@
 # SIMPLE_WAYOUT with Official Greenfield Image
-# This uses the official Greenfield Dockerfile from the repository
-
-version: '3.8'
+# This builds the official Greenfield compositor from source
 
 services:
   # Official Greenfield compositor-proxy (built from source)
@@ -9,6 +7,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    image: greenfield-official:latest
     container_name: compositor-proxy-official
     command: >
       --bind-port 8081
@@ -24,7 +23,7 @@ services:
       - XAUTHORITY=/tmp/.Xauthority
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "node"]
+      test: ["CMD", "pgrep", "-f", "compositor-proxy-cli"]
       interval: 30s
       timeout: 10s
       retries: 3

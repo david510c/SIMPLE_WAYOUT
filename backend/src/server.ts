@@ -3,7 +3,12 @@ import cors from '@fastify/cors'
 import staticFiles from '@fastify/static'
 import { spawn, ChildProcess } from 'child_process'
 import { readFileSync } from 'fs'
-import { join } from 'path'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 /**
  * SIMPLE_WAYOUT Backend Server

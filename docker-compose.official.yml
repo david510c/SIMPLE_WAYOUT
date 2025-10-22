@@ -1,14 +1,27 @@
+# SIMPLE_WAYOUT with Official Greenfield Image
+# This uses the official Greenfield Dockerfile from the repository
+
 version: '3.8'
 
 services:
-  # Greenfield compositor-proxy
+  # Official Greenfield compositor-proxy (built from source)
   compositor-proxy:
-    image: david510c/greenfield-base:v1.5-diagnostic-fixed-v4
-    container_name: compositor-proxy
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: compositor-proxy-official
+    command: >
+      --bind-port 8081
+      --bind-ip 0.0.0.0
+      --allow-origin '*'
+      --encoder x264
     ports:
       - "8081:8081"
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
+    environment:
+      - HOST=compositor-proxy-official
+      - XAUTHORITY=/tmp/.Xauthority
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "pgrep", "-f", "node"]

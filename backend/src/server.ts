@@ -102,7 +102,7 @@ fastify.post<{
     fastify.log.info(`Launching application: ${app.name}`)
 
     // Spawn process
-    const process = spawn(app.executable, app.args || [], {
+    const childProcess = spawn(app.executable, app.args || [], {
       env: {
         ...process.env,
         WAYLAND_DISPLAY: process.env.WAYLAND_DISPLAY || 'wayland-0',
@@ -113,24 +113,24 @@ fastify.post<{
     })
 
     // Log output
-    process.stdout?.on('data', (data) => {
+    childProcess.stdout?.on('data', (data: Buffer) => {
       fastify.log.info(`[${app.id}] ${data.toString().trim()}`)
     })
 
-    process.stderr?.on('data', (data) => {
+    childProcess.stderr?.on('data', (data: Buffer) => {
       fastify.log.warn(`[${app.id}] ${data.toString().trim()}`)
     })
 
     // Handle exit
-    process.on('exit', (code, signal) => {
-      fastify.log.info(`Application exited: ${app.id}`, { code, signal })
+    childProcess.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
+      fastify.log.info({ code, signal, appId: app.id }, `Application exited: ${app.id}`)
       runningApps.delete(id)
     })
 
     // Store running app
     const runningAppId = `app_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     runningApps.set(id, {
-      process,
+      process: childProcess,
       appId: id,
       startedAt: new Date(),
     })
@@ -140,12 +140,12 @@ fastify.post<{
       runningApp: {
         id: runningAppId,
         appId: id,
-        pid: process.pid,
+        pid: childProcess.pid,
         startedAt: new Date().toISOString(),
       },
     }
   } catch (error) {
-    fastify.log.error(`Failed to launch application: ${app.id}`, error)
+    fastify.log.error({ error, appId: app.id }, `Failed to launch application: ${app.id}`)
     return reply.code(500).send({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -205,7 +205,7 @@ fastify.delete<{
       success: true,
     }
   } catch (error) {
-    fastify.log.error(`Failed to stop application: ${appId}`, error)
+    fastify.log.error({ error, appId }, `Failed to stop application: ${appId}`)
     return reply.code(500).send({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

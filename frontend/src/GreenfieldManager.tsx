@@ -58,7 +58,7 @@ export function GreenfieldManager({ children }: Props) {
 
       // Step 2: Create compositor session
       console.log('[GreenfieldManager] Step 2: Creating session')
-      const newSession = await createCompositorSession({ mode: 'floating' })
+      const newSession = await createCompositorSession({ mode: 'floating' } as any)
       console.log('[GreenfieldManager] ✓ Session created')
 
       // Step 3: Wait for canvas to be ready
@@ -76,7 +76,7 @@ export function GreenfieldManager({ children }: Props) {
 
       // Step 5: Initialize scene
       console.log('[GreenfieldManager] Step 5: Initializing scene')
-      newSession.userShell.actions.initScene(() => {
+      ;(newSession.userShell.actions as any).initScene(() => {
         console.log('[GreenfieldManager] Canvas provider called')
         return { canvas, id: canvas.id }
       })
